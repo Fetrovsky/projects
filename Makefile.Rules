@@ -1,0 +1,35 @@
+all: $(TARGET)
+
+ROOT=$(HOME)/projects
+PROJECT_NAME?=$(TARGET)
+PROJECT_ROOT=$(ROOT)/$(PROJECT_NAME)
+
+COPTS=$(INCLUDE) -I$(ROOT) -iquote $(PROJECT_ROOT) -Wall
+
+LOPTS=$(LIBS) \
+	-Llib -L$(PROJECT_ROOT)/lib \
+	-L/lib64 -L/lib \
+	-L/usr/local/lib64/gcc47 -L/usr/local/lib/gcc47
+
+TESTS=$(wildcard *_test.c++)
+
+AR=/usr/local/bin/ar -r
+CC=g++47
+
+COMPILE=$(CC) $(COPTS) -c
+LINK=$(CC) $(LOPTS)
+
+
+.SUFFIXES: .c++ .o
+
+.c++.o:
+	$(COMPILE) $? -o $@
+
+
+.PHONY: tests
+
+tests: | all
+	$(COMPILE) $@ -o tests/$*.o
+	$(LINK) tests/$*.o $(LIB) $(LIBDEPS) -o tests/$*
+	tests/$*
+
