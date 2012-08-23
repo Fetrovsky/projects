@@ -4,10 +4,11 @@
 
 // Unit is meter.  Scale is 1 m = 1 char.
 int const SpaceLength = 80;             // m
-double const InitialAccel = 20;         // m/s2
+double const InitialAccel =  0;         // m/s2
+double const InitialSpeed = 50;         // m/s
 double const GravityAccel = -9.80665;   // m/s2
-double const TickSimTime = 0.01;        // s
-double const TickRealTime = 0.01;       // s
+double const TickSimTime  =  0.05;      // s
+double const TickRealTime =  0.05;      // s
 
 void visualize(int accel, int speed, int pos, int time) {
      std::string space(SpaceLength, ' ');
@@ -42,7 +43,7 @@ void tick(double& accel, double& speed, double& pos, double& time) {
 int main() {
      double time = 0;
      double pos = 0;
-     double speed = 0;
+     double speed = InitialSpeed;
      double accel = InitialAccel;
 
      while(true) {
