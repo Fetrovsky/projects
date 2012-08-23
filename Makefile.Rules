@@ -14,7 +14,7 @@ LOPTS=$(LIBS) \
 TESTS=$(wildcard *_test.c++)
 
 AR=/usr/local/bin/ar -r
-CC=g++47
+CC=g++
 
 COMPILE=$(CC) $(COPTS) -c
 LINK=$(CC) $(LOPTS)
