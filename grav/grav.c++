@@ -3,14 +3,15 @@
 #include <time.h>
 
 // Unit is meter.  Scale is 1 m = 1 char.
-int const SpaceLength = 80;             // m
-double const InitialAccel =  0;         // m/s2
+int const SpaceLength = 100;            // m
+// TODO:  double const SpaceScale = 0.1           // meters per character
 double const InitialSpeed = 50;         // m/s
 double const GravityAccel = -9.80665;   // m/s2
-double const TickSimTime  =  0.05;      // s
-double const TickRealTime =  0.05;      // s
+double const TickSimTime  =  0.01;      // s
+double const TickRealTime =  0.01;      // s
 
-void visualize(int accel, int speed, int pos, int time) {
+void visualize(int accel, int speed, int pos, int time)
+{
      std::string space(SpaceLength, ' ');
      space+= '|';
 
@@ -21,16 +22,15 @@ void visualize(int accel, int speed, int pos, int time) {
      std::cout.flush();
 }
 
-void tick(double& accel, double& speed, double& pos, double& time) {
+void tick(double& accel, double& speed, double& pos, double& time)
+{
      pos+=   (speed * TickSimTime);
      speed+= (accel * TickSimTime);
-     accel+= (GravityAccel * TickSimTime);
      time+= TickSimTime;
 
      if (pos <= 0 && speed < 0) {
-          accel = 0;
-          speed*= -0.4;  // bounce;
-          pos = -pos;
+          speed*= -0.8;  // bounce;
+          pos = 0;
      }
 
      timespec sleep_time;
@@ -40,15 +40,16 @@ void tick(double& accel, double& speed, double& pos, double& time) {
      while(nanosleep(&sleep_time, 0));
 }
 
-int main() {
+int main()
+{
      double time = 0;
      double pos = 0;
      double speed = InitialSpeed;
-     double accel = InitialAccel;
+     double accel = GravityAccel;
 
      while(true) {
           tick(accel, speed, pos, time);
-          visualize(int(accel), int(speed), int(pos), int(time * 100));
+          visualize(int(accel), int(speed), int(pos), int(time));
      }
 
      std::cout << std::endl;
